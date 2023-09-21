@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2bf18vvctyqc"]
+[gd_scene load_steps=7 format=3 uid="uid://b2bf18vvctyqc"]
 
 [ext_resource type="PackedScene" uid="uid://b5kekfn40jtch" path="res://scenes/player.tscn" id="1_3fuv2"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_26qcf"]
+[ext_resource type="PackedScene" uid="uid://b74sswghtjdvd" path="res://scenes/mob.tscn" id="2_ktybu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fehiy"]
 size = Vector3(60, 2, 60)
@@ -8,10 +10,20 @@ size = Vector3(60, 2, 60)
 [sub_resource type="BoxMesh" id="BoxMesh_7sbsd"]
 size = Vector3(60, 2, 60)
 
+[sub_resource type="Curve3D" id="Curve3D_dvk26"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -13.4484, 0, -18.2475, 0, 0, 0, 0, 0, 0, 13.714, 0, -18.2475, 0, 0, 0, 0, 0, 0, 13.1376, 0, 20.3706, 0, 0, 0, 0, 0, 0, -13.8807, 0, 20.3706, 0, 0, 0, 0, 0, 0, -13.4484, 0, -18.2475),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
+
 [node name="Main" type="Node"]
+script = ExtResource("1_26qcf")
+mob_scene = ExtResource("2_ktybu")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
 shape = SubResource("BoxShape3D_fehiy")
@@ -24,7 +36,22 @@ transform = Transform3D(1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.732258, 0.681028, 0, -0.681028, 0.732258, 0, 19.7072, 41.3201)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 19.707, 19)
+projection = 1
+size = 25.0
 
 [node name="Player" parent="." instance=ExtResource("1_3fuv2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.611999, 0)
+
+[node name="SpawnPath" type="Path3D" parent="."]
+curve = SubResource("Curve3D_dvk26")
+
+[node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -13.4484, 0, -18.2475)
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="hit" from="Player" to="." method="_on_player_hit"]
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

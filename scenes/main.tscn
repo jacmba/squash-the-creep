@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://b2bf18vvctyqc"]
+[gd_scene load_steps=12 format=3 uid="uid://b2bf18vvctyqc"]
 
 [ext_resource type="PackedScene" uid="uid://b5kekfn40jtch" path="res://scenes/player.tscn" id="1_3fuv2"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_26qcf"]
 [ext_resource type="PackedScene" uid="uid://b74sswghtjdvd" path="res://scenes/mob.tscn" id="2_ktybu"]
+[ext_resource type="Material" uid="uid://b5wcn7mfqc7hl" path="res://materials/ground.tres" id="3_k1dnk"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="4_2gu0r"]
 [ext_resource type="FontFile" uid="uid://6tnmhyr3pnve" path="res://fonts/Montserrat-Medium.ttf" id="4_bbq0o"]
 
@@ -10,6 +11,7 @@
 size = Vector3(60, 2, 60)
 
 [sub_resource type="BoxMesh" id="BoxMesh_7sbsd"]
+material = ExtResource("3_k1dnk")
 size = Vector3(60, 2, 60)
 
 [sub_resource type="Curve3D" id="Curve3D_dvk26"]
@@ -22,6 +24,10 @@ point_count = 5
 [sub_resource type="Theme" id="Theme_p76vt"]
 default_font = ExtResource("4_bbq0o")
 default_font_size = 22
+
+[sub_resource type="LabelSettings" id="LabelSettings_r1eeu"]
+font_color = Color(0, 0, 0, 1)
+outline_size = 4
 
 [node name="Main" type="Node"]
 script = ExtResource("1_26qcf")
@@ -75,6 +81,18 @@ offset_bottom = 41.0
 theme = SubResource("Theme_p76vt")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Score: 0"
+label_settings = SubResource("LabelSettings_r1eeu")
+
+[node name="Retry" type="ColorRect" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.709804)
+metadata/_edit_use_anchors_ = true
 
 [connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

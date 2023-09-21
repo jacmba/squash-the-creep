@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.1")
 boot_splash/show_image=false
 config/icon="res://icon.png"
 
+[autoload]
+
+MusicPlayer="*res://scenes/music_player.tscn"
+
 [display]
 
 window/size/viewport_width=720
